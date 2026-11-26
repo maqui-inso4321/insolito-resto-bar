@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Insólito Resto-Bar · Ecosistema digital</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f4f1ec;--card:#fff;--ink:#16130f;--mut:#6f6760;--line:#e3dcd3;--red:#c8102e;--soft:#f6ebe9;--ok:#1d7a4a;--dk:#0e0d0c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121110;--card:#1a1816;--ink:#efe9e2;--mut:#a0978e;--line:#2d2926;--soft:#2a1a1c;--ok:#4fc283;--dk:#0a0909}}
+:root[data-theme=dark]{--bg:#121110;--card:#1a1816;--ink:#efe9e2;--mut:#a0978e;--line:#2d2926;--soft:#2a1a1c;--ok:#4fc283;--dk:#0a0909}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;font-family:Inter,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.aviso{background:#000;color:#b5aca3;text-align:center;font-size:.72rem;letter-spacing:.06em;padding:7px 12px;border-bottom:1px solid #26221f}
+header{background:var(--dk);color:#fff;padding:16px clamp(16px,5vw,64px);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.brand{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:700;font-size:1.7rem;letter-spacing:.14em;text-transform:uppercase;line-height:1}
+.brand i{font-style:normal;color:var(--red)}
+.brand small{display:block;font-family:Inter,Arial,sans-serif;font-size:.6rem;color:#9d948b;letter-spacing:.28em;font-weight:500;margin-top:5px}
+nav{display:flex;gap:2px}nav button{background:none;border:0;border-bottom:2px solid transparent;color:#b9b0a7;padding:9px 16px;font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+nav button:hover{color:#fff}nav button.on{color:#fff;border-color:var(--red)}
+.cats{background:var(--card);border-bottom:1px solid var(--line);padding:0 clamp(16px,5vw,64px);display:flex;gap:26px;flex-wrap:wrap}
+.chip{border:0;border-bottom:2px solid transparent;background:none;color:var(--mut);padding:13px 0;font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.chip.on{color:var(--ink);border-color:var(--red)}.chip:hover{color:var(--ink)}
+.trust{display:flex;gap:28px;flex-wrap:wrap;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:14px clamp(16px,5vw,64px);border-bottom:1px solid var(--line)}
+.eco{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px clamp(16px,5vw,64px) 0}
+.eco:before{content:"Ecosistema conectado";font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-right:6px}
+.eco span{font-size:.68rem;border:1px solid var(--line);color:var(--mut);padding:3px 10px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase}
+main{width:min(1240px,92%);margin:22px auto 56px}.view{display:none}.view.on{display:block}
+.hero{position:relative;overflow:hidden;background:linear-gradient(105deg,rgba(0,0,0,.92),rgba(20,12,12,.78)),repeating-linear-gradient(45deg,#1b1613 0 2px,#120f0d 2px 6px);color:#fff;padding:clamp(34px,6vw,70px) clamp(20px,5vw,56px);border-radius:3px;border-left:4px solid var(--red);margin-bottom:6px}
+.hero:after{content:"INSÓLITO";position:absolute;right:-10px;bottom:-24px;font-family:"Barlow Condensed",Arial,sans-serif;font-weight:700;font-size:clamp(4rem,15vw,11rem);letter-spacing:.04em;color:rgba(255,255,255,.04);line-height:1;pointer-events:none}
+.eb{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:#e0495d;font-weight:600}
+h1{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em;line-height:1;font-size:clamp(2.3rem,6vw,4.2rem);margin:12px 0 14px}
+h1 b{color:var(--red);font-weight:700}
+.hero p{max-width:540px;color:#cfc6bd;margin:0 0 22px}
+.hero .stats{display:flex;gap:34px;flex-wrap:wrap;margin-top:26px;padding-top:18px;border-top:1px solid #2f2926;position:relative;z-index:1}
+.hero .stats b{display:block;font-size:1.25rem;font-family:"Barlow Condensed",Arial,sans-serif;letter-spacing:.06em}.hero .stats span{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#9d948b}
+h2{margin:0 0 8px}h3{margin:0 0 12px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:22px}
+.lay{display:grid;grid-template-columns:1fr 310px;gap:26px;align-items:start;margin-top:22px}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 18px;align-items:center}
+input,select,textarea{padding:11px 13px;border:1px solid var(--line);border-radius:2px;background:var(--card);color:var(--ink);width:100%}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.tools input[type=search]{flex:1;min-width:200px}.tools label{display:flex;align-items:center;gap:6px;font-size:.8rem;white-space:nowrap;color:var(--mut)}.tools label input{width:auto}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.prod{border:1px solid var(--line);border-radius:3px;display:flex;flex-direction:column;background:var(--card);transition:border-color .2s,transform .2s}
+.prod:hover{border-color:var(--red);transform:translateY(-2px)}
+.prod>*:not(.ico){margin-left:16px;margin-right:16px}.prod>.btn{margin-bottom:16px}
+.ico{height:140px;margin:0 0 14px;background:linear-gradient(135deg,rgba(200,16,46,.28),transparent 55%),repeating-linear-gradient(45deg,#1d1815 0 2px,#13100e 2px 7px);position:relative;display:flex;align-items:flex-end;padding:12px 16px}
+.ico svg{position:absolute;inset:0;margin:auto;width:62px;height:62px;stroke:#e9e1d8;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.ico em{font-style:normal;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:#d6cdc4}
+.tag{position:absolute;top:12px;right:12px;background:var(--red);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:2px}
+.prod b{font-size:1rem;font-weight:650}.prod small{color:var(--mut);font-size:.76rem;margin-top:2px}
+.old{text-decoration:line-through;color:var(--mut);font-size:.82rem;margin-left:8px;font-weight:400}
+.price{font-size:1.3rem;font-weight:700;margin:10px 0 4px;letter-spacing:-.01em}.free{color:var(--ok);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.btn{border:1px solid var(--red);border-radius:2px;padding:11px 18px;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--red);color:#fff;transition:background .2s,color .2s}
+.btn:hover{background:#a50d26;border-color:#a50d26}.btn.alt{background:transparent;color:var(--ink);border-color:var(--ink)}.btn.alt:hover{background:var(--ink);color:var(--bg)}
+.btn.lt{background:transparent;color:var(--mut);border-color:var(--line)}.btn.lt:hover{color:var(--ink);border-color:var(--ink);background:transparent}.btn.ghost{background:transparent;color:#fff;border-color:#6c635b}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sm{padding:6px 10px;font-size:.64rem;letter-spacing:.1em;margin:2px 4px 2px 0;white-space:nowrap}
+.cart{position:sticky;top:12px}.line{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.84rem}
+.qty{display:inline-flex;align-items:center;gap:8px;margin-top:6px}
+.qty button.q{width:26px;height:26px;padding:0;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:2px;font-weight:700;line-height:1}
+.qty button.q:hover{border-color:var(--red);color:var(--red)}
+.sum{display:flex;justify-content:space-between;font-size:.86rem;margin:7px 0;color:var(--mut)}.sum b{color:var(--ink)}.tot{font-weight:700;font-size:1.1rem;border-top:1px solid var(--line);padding-top:12px;color:var(--ink)}
+.note{font-size:.72rem;color:var(--mut);margin:-2px 0 8px}
+.msg{margin-top:12px;padding:10px 13px;border-left:3px solid var(--red);background:var(--soft);font-size:.82rem;display:none}.msg.show{display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}.f{margin-bottom:12px}.f label{display:block;font-weight:600;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.kpi{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--red);border-radius:2px;padding:16px}
+.kpi small{color:var(--mut);display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}.kpi b{font-size:1.4rem;font-weight:700}.neg{color:var(--red)}.pos{color:var(--ok)}.cancel{color:var(--mut)}
+.tabs{display:flex;gap:26px;flex-wrap:wrap;margin:20px 0 14px;border-bottom:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:.84rem}th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.tw{overflow-x:auto}.inp{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.inp label{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:600;display:block;margin-bottom:4px}
+.cv{position:relative;height:280px}.rev{border-top:1px solid var(--line);padding:12px 0;font-size:.86rem}
+.demo{font-size:.78rem;color:var(--mut);margin:0 0 6px}
+footer{background:var(--dk);color:#8f867d;text-align:center;font-size:.74rem;letter-spacing:.06em;padding:30px 14px;border-top:3px solid var(--red)}footer b{color:#fff;letter-spacing:.2em}
+@media(max-width:900px){.lay,.two{grid-template-columns:1fr}.cart{position:static}.grid{grid-template-columns:repeat(2,1fr)}.kpis,.inp{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}nav button{padding:8px 10px}.cats{gap:18px}}
+</style>
+</head>
+<body>
+<div class="aviso">Simulador académico · Pago de prueba mediante Stripe · Envío simulado a Huichapan 42400 · Los datos se guardan en este navegador</div>
+<header>
+  <div class="brand">IN<i>·</i>SÓLITO<small>RESTO-BAR · ECOSISTEMA DIGITAL</small></div>
+  <nav>
+    <button class="on" data-v="tienda">Tienda</button>
+    <button data-v="cuenta">Mi cuenta</button>
+    <button data-v="panel">Panel</button>
+  </nav>
+</header>
+<div class="cats" id="cats"></div>
+<div class="trust"><span> Compra simulada segura</span><span> Envío a Huichapan 42400</span><span> Soporte: 55 6869 9232</span><span>★ Reseñas de clientes</span></div>
+<div class="eco"><span>Internet</span><span>Móvil</span><span>ERP</span><span>Call Center</span><span>Web Center</span><span>CRM</span><span>CSM</span></div>
+
+<main>
+<!-- TIENDA -->
+<section class="view on" id="tienda">
+  <div class="hero"><div class="eb">Comida casual · Coctelería de autor · Eventos</div><h1>Lo más <b>INsólito</b><br>de México</h1><p>Un espacio rústico-industrial en los pueblos mágicos donde cada platillo y cada cóctel cuenta una historia. Explora la tienda en línea y su ecosistema digital.</p><a href="#catalogo" class="btn">Ver catálogo</a> <button class="btn ghost" type="button" onclick="document.querySelector('nav button[data-v=cuenta]').click()">Mi cuenta</button><div class="stats"><div><b>15</b><span>Productos</span></div><div><b>Huichapan 42400</b><span>Envío simulado</span></div><div><b>7</b><span>Tecnologías integradas</span></div></div></div>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Buscar platillos, bebidas o paquetes…">
+    <label><input type="checkbox" id="fFree"> Envío gratis</label>
+    <label><input type="checkbox" id="fOff"> En oferta</label>
+    <select id="sort" style="width:auto"><option value="">Ordenar</option><option value="p">Menor precio</option><option value="r">Mejor calificados</option></select>
+  </div>
+  <div class="lay" id="catalogo">
+    <div><div class="grid" id="grid"></div></div>
+    <aside class="card cart">
+      <h3>Mi carrito</h3>
+      <div id="cartBox"></div>
+      <div class="f" style="margin-top:14px"><label for="checkoutName">Nombre</label><input id="checkoutName" type="text" maxlength="60" autocomplete="name" placeholder="Tu nombre completo"></div>
+      <div class="f"><label for="checkoutEmail">Correo electrónico</label><input id="checkoutEmail" type="email" maxlength="120" autocomplete="email" placeholder="nombre@correo.com"></div>
+      <p style="font-size:.72rem;color:var(--mut);margin:4px 0 10px">Usaremos estos datos para registrar tu pedido y enviarte los correos.</p>
+      <div class="sum"><span>Productos</span><b id="sub">$0.00</b></div>
+      <div class="sum"><span>Envío</span><b id="ship">$0.00</b></div>
+      <div class="note" id="shipNote"></div>
+      <div class="sum tot"><span>Total</span><span id="tot">$0.00</span></div>
+      <button class="btn" id="buy" style="width:100%;margin-top:8px" disabled>Continuar al pago con Stripe</button>
+      <div class="msg" id="buyMsg"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- CUENTA -->
+<section class="view" id="cuenta">
+  <h1>Mi <b>cuenta</b></h1>
+  <div class="two">
+    <div class="card" id="authBox"></div>
+    <div class="card">
+      <h3>Datos de soporte (Call Center · Web Center)</h3>
+      <p style="font-size:.88rem;margin:0 0 6px"> Teléfono: 55 6869 9232<br> Chat web: lunes a domingo, 13:00–22:00 (simulado)<br> Entrega simulada: Huichapan, Hgo. 42400<br> Sitio oficial: <a href="https://www.insolito.mx" target="_blank" rel="noopener" style="color:var(--red)">insolito.mx</a></p>
+      <h3 style="margin-top:14px">Escribir una reseña (CSM)</h3>
+      <div class="f"><input id="rvName" type="text" maxlength="40" autocomplete="name" placeholder="Tu nombre"></div>
+      <div class="f"><select id="rvProd"></select></div>
+      <div class="f"><select id="rvStars"><option value="5">5 ★</option><option value="4">4 ★</option><option value="3">3 ★</option><option value="2">2 ★</option><option value="1">1 ★</option></select></div>
+      <div class="f"><textarea id="rvTxt" rows="2" maxlength="160" placeholder="Cuéntanos tu experiencia"></textarea></div>
+      <button class="btn" id="rvBtn">Publicar reseña</button>
+      <div class="msg" id="rvMsg"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Reseñas de clientes</h3><div id="revList"></div></div>
+</section>
+
+<!-- PANEL -->
+<section class="view" id="panel">
+  <h1>Panel de <b>administrador</b></h1>
+  <p class="demo">Panel de demostración: no tiene contraseña porque es un simulador académico.</p>
+  <div class="tools"><button class="btn lt sm" id="resetBtn" type="button">Reiniciar datos de prueba</button><span style="font-size:.74rem;color:var(--mut)">Borra pedidos, reseñas, carrito y supuestos guardados en este navegador.</span></div>
+  <div class="tabs" id="scen"></div>
+  <div class="card"><h3>Supuestos del escenario (editables)</h3><div class="inp" id="inputs"></div></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="tabs" id="ptabs">
+    <button class="chip on" data-t="t1">CRM</button><button class="chip" data-t="t2">Inventario (ERP)</button><button class="chip" data-t="t3">Pedidos y ventas</button><button class="chip" data-t="t4">Comparación</button>
+  </div>
+  <div class="card ptab" id="t1"><div class="tw"><table id="crm"></table></div></div>
+  <div class="card ptab" id="t2" style="display:none"><div class="tw"><table id="inv"></table></div></div>
+  <div class="card ptab" id="t3" style="display:none"><p id="salesSum" style="font-size:.86rem;margin:0 0 12px"></p><div class="tw"><table id="sales"></table></div><p style="font-size:.72rem;color:var(--mut);margin:10px 0 0">*Margen estimado = subtotal de productos menos su costo; no incluye envío. Al cancelar un pedido pendiente, las existencias regresan al inventario.</p></div>
+  <div class="card ptab" id="t4" style="display:none"><div class="cv"><canvas id="chart"></canvas></div><div class="tw" style="margin-top:12px"><table id="cmp"></table></div></div>
+</section>
+</main>
+<footer><b>INSÓLITO RESTO-BAR</b> · Simulador académico de comercio electrónico (Tema 3.1–3.7)<br>Los pedidos se registran localmente como pendientes de pago; este sitio no verifica cobros de Stripe. El administrador los marca como pagados desde el Panel.</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const money=v=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(v);
+const pct=v=>(v*100).toFixed(1)+'%';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Datos ---------- */
+const products=[
+ {id:1,n:'Hamburguesa Insólita',c:'Comida',p:189,cost:72,s:30,r:4.8,free:true,off:0},
+ {id:2,n:'Tabla para compartir',c:'Comida',p:320,cost:130,s:18,r:4.6,free:false,off:10},
+ {id:3,n:'Alitas BBQ (10 pzas)',c:'Comida',p:165,cost:60,s:28,r:4.5,free:true,off:0},
+ {id:4,n:'Nachos gratinados',c:'Comida',p:145,cost:48,s:35,r:4.4,free:false,off:0},
+ {id:5,n:'Tacos de arrachera',c:'Comida',p:175,cost:68,s:26,r:4.7,free:true,off:0},
+ {id:6,n:'Pizza artesanal',c:'Comida',p:210,cost:80,s:20,r:4.6,free:false,off:5},
+ {id:7,n:'Cóctel de autor',c:'Bebidas',p:140,cost:38,s:50,r:4.9,free:true,off:0},
+ {id:8,n:'Margarita de la casa',c:'Bebidas',p:120,cost:30,s:45,r:4.5,free:false,off:0},
+ {id:9,n:'Cubeta de cerveza (5)',c:'Bebidas',p:275,cost:120,s:25,r:4.5,free:false,off:15},
+ {id:10,n:'Mezcal en copa',c:'Bebidas',p:130,cost:45,s:32,r:4.7,free:true,off:0},
+ {id:11,n:'Limonada mineral',c:'Bebidas',p:65,cost:14,s:60,r:4.3,free:false,off:0},
+ {id:12,n:'Brownie con helado',c:'Postres',p:95,cost:30,s:24,r:4.8,free:true,off:0},
+ {id:13,n:'Paquete de evento (10 pers.)',c:'Eventos',p:2500,cost:1300,s:6,r:4.7,free:true,off:0},
+ {id:14,n:'Tarjeta de regalo $500',c:'Regalos',p:500,cost:400,s:40,r:4.4,free:true,off:5},
+ {id:15,n:'Gorra Insólito',c:'Regalos',p:250,cost:110,s:15,r:4.5,free:false,off:0}
+];
+/* Calificación base (editorial) de cada producto: nunca se modifica; la calificación mostrada se recalcula siempre desde ella. */
+products.forEach(p=>{p.r0=p.r;});
+const ICON={1: '<path d="M12 30c0-10 9-16 20-16s20 6 20 16z"/><path d="M10 36h44"/><path d="M12 42c4 4 8-4 12 0s8-4 12 0 8-4 12 0"/><path d="M14 48h36c0 4-3 6-6 6H20c-3 0-6-2-6-6z"/>', 2: '<rect x="8" y="22" width="48" height="26" rx="3"/><circle cx="22" cy="35" r="6"/><path d="M34 29h16M34 35h16M34 41h12"/>', 3: '<path d="M40 14c8 0 12 8 8 15s-12 8-18 4L16 47"/><circle cx="14" cy="49" r="3"/><circle cx="20" cy="53" r="3"/>', 4: '<path d="M10 46L26 18l16 28zM30 46l14-24 14 24zM8 50h48"/>', 5: '<path d="M8 44a24 24 0 0 1 48 0z"/><path d="M16 38c4-4 8-4 12 0M32 36c4-4 8-4 12 0"/>', 6: '<path d="M32 54L10 18c14-8 30-8 44 0z"/><circle cx="30" cy="26" r="3"/><circle cx="38" cy="34" r="3"/><circle cx="28" cy="38" r="2.5"/>', 7: '<path d="M12 14h40L32 36zM32 36v18M22 54h20M44 8l-8 14"/>', 8: '<path d="M12 18h40c0 12-8 20-20 20S12 30 12 18z"/><path d="M32 38v16M22 54h20"/><circle cx="48" cy="14" r="5"/>', 9: '<path d="M12 28h40l-5 26H17z"/><path d="M20 28V16M32 28V12M44 28V16"/>', 10: '<path d="M22 14h20l-3 22a7 7 0 0 1-14 0z"/><path d="M26 54h12M32 40v14"/>', 11: '<path d="M18 14h28l-4 40H22z"/><path d="M20 26h24"/><circle cx="50" cy="16" r="6"/>', 12: '<rect x="12" y="36" width="40" height="16" rx="2"/><path d="M12 44h40"/><path d="M20 36c0-8 6-12 12-12s12 4 12 12"/>', 13: '<path d="M12 52L24 20l20 20z"/><path d="M34 14v4M46 22l-3 3M52 34h-4"/><circle cx="44" cy="12" r="2"/>', 14: '<rect x="8" y="16" width="48" height="32" rx="4"/><path d="M8 26h48M16 38h14"/>', 15: '<path d="M12 40c0-14 8-22 20-22s20 8 20 22z"/><path d="M12 40h40M50 40c6 0 10 2 10 4H34"/>'};
+const svg=id=>`<svg viewBox="0 0 64 64" aria-hidden="true">${ICON[id]}</svg>`;
+const cats=['Todos','Comida','Bebidas','Postres','Eventos','Regalos'];
+const ST={P:'Pendiente de pago',OK:'Pagado',X:'Cancelado'};
+const stCls=s=>s===ST.OK?'pos':s===ST.X?'cancel':'neg';
+const FREE_SHIP_MIN=600,SHIP_COST=45;
+/* customers.orders / customers.total cuentan SOLO pedidos pagados. */
+let customers=[{id:1,name:'Mariana R.',email:'mariana@demo.mx',total:1240,orders:4},{id:2,name:'Luis H.',email:'luis@demo.mx',total:380,orders:2},{id:3,name:'Ana P.',email:'ana@demo.mx',total:0,orders:0}];
+/* orders: un registro por pedido, con sus líneas de producto y su estado. */
+let orders=[],reviews=[{p:7,u:'Adriana M.',st:5,t:'Cada visita es una experiencia auténtica.'}],cart=new Map(),user=null,cat='Todos',scen='Base';
+
+/* ---------- Configuración de servicios externos ---------- */
+const EMAILJS_PUBLIC_KEY='cPMxGpeD4_20QVWUp';
+const EMAILJS_SERVICE_ID='service_vmbimwb';
+const EMAILJS_WELCOME_TEMPLATE='template_37j33gp';
+const EMAILJS_ORDER_TEMPLATE='template_lwcnibn';
+const STRIPE_PAYMENT_LINK='https://buy.stripe.com/test_bJe7sNgzg17udOI8UUgfu00';
+const STORAGE_KEY='insolito_resto_bar_static_v2';
+if(window.emailjs){emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});}
+
+/* Se guarda solo después de una acción del usuario (no en cada render). */
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({products:products.map(p=>({id:p.id,s:p.s})),customers,orders,reviews,cart:[...cart],scen,S,activeEmail:user?user.email:null}));}
+  catch(err){console.warn('No se pudo guardar el estado local:',err);}
+}
+function loadState(){
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;const d=JSON.parse(raw);
+    if(Array.isArray(d.products))d.products.forEach(x=>{const p=products.find(y=>y.id===x.id);if(p&&Number.isFinite(x.s))p.s=Math.max(0,x.s);});
+    if(Array.isArray(d.customers))customers=d.customers;
+    if(Array.isArray(d.orders))orders=d.orders;
+    if(Array.isArray(d.reviews))reviews=d.reviews;
+    if(Array.isArray(d.cart)){
+      cart=new Map();
+      d.cart.forEach(([id,q])=>{const p=products.find(x=>x.id===id);if(!p)return;const n=Math.min(Math.floor(q)||0,p.s);if(n>=1)cart.set(id,n);});
+    }
+    user=d.activeEmail?(customers.find(c=>String(c.email).toLowerCase()===String(d.activeEmail).toLowerCase())||null):null;
+    if(d.scen&&S[d.scen])scen=d.scen;
+    if(d.S&&typeof d.S==='object')Object.keys(S).forEach(k=>{if(d.S[k])Object.keys(S[k]).forEach(v=>{if(Number.isFinite(d.S[k][v]))S[k][v]=d.S[k][v];});});
+  }catch(err){console.warn('No se pudo recuperar el estado local:',err);}
+}
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+
+const price=p=>p.p*(1-p.off/100);
+
+/* ---------- Navegación ---------- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===b.dataset.v));
+  renderAll();
+});
+$('cats').innerHTML=cats.map(c=>`<button class="chip${c===cat?' on':''}" data-c="${c}">${c}</button>`).join('');
+$('cats').onclick=e=>{const c=e.target.dataset.c;if(!c)return;cat=c;document.querySelectorAll('#cats .chip').forEach(x=>x.classList.toggle('on',x.dataset.c===c));renderShop()};
+['q','fFree','fOff','sort'].forEach(i=>$(i).addEventListener('input',renderShop));
+
+/* ---------- Tienda ---------- */
+function renderShop(){
+  const q=$('q').value.toLowerCase();
+  let l=products.filter(p=>(cat==='Todos'||p.c===cat)&&p.n.toLowerCase().includes(q)&&(!$('fFree').checked||p.free)&&(!$('fOff').checked||p.off>0));
+  if($('sort').value==='p')l.sort((a,b)=>price(a)-price(b));
+  if($('sort').value==='r')l.sort((a,b)=>b.r-a.r);
+  $('grid').innerHTML=l.length?l.map(p=>`<article class="prod"><div class="ico">${svg(p.id)}<em>${p.c}</em>${p.off?`<span class="tag">-${p.off}%</span>`:''}</div><b>${esc(p.n)}</b><small>${p.c} · ★ ${p.r} · ${p.s} disp.</small><div class="price">${money(price(p))}${p.off?`<span class="old">${money(p.p)}</span>`:''}</div>${p.free?'<div class="free">✓ Envío gratis</div>':''}<button class="btn" style="margin-top:8px" data-a="${p.id}" ${p.s<=0?'disabled':''}>${p.s<=0?'Agotado':'Agregar al carrito'}</button></article>`).join(''):'<p style="grid-column:1/-1;color:var(--mut)">Sin resultados.</p>';
+  renderCart();
+}
+$('grid').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const id=+b.dataset.a;const p=products.find(x=>x.id===id),q=(cart.get(id)||0)+1;
+  if(!p)return;
+  if(q>p.s){return say('buyMsg','No hay más existencias de este producto.')}
+  cart.set(id,q);saveState();renderCart();say('buyMsg',`“${p.n}” agregado.`)};
+
+/* Regla de envío: gratis si TODOS los productos del carrito lo tienen o si el subtotal llega a $600; si no, $45. */
+function totals(){let s=0,allFree=true;cart.forEach((q,id)=>{const p=products.find(x=>x.id===id);s+=price(p)*q;if(!p.free)allFree=false});
+  const sh=!cart.size||allFree||s>=FREE_SHIP_MIN?0:SHIP_COST;return{s,sh,t:s+sh}}
+function renderCart(){
+  $('cartBox').innerHTML=cart.size?[...cart].map(([id,q])=>{const p=products.find(x=>x.id===id);return`<div class="line"><span>${esc(p.n)}<br><small>${money(price(p))} c/u</small><br><span class="qty"><button type="button" class="q" data-dec="${id}" aria-label="Quitar uno">−</button><b>${q}</b><button type="button" class="q" data-inc="${id}" aria-label="Agregar uno" ${q>=p.s?'disabled':''}>+</button> <a href="#" data-r="${id}" style="color:var(--red);font-size:.76rem">Quitar</a></span></span><b>${money(price(p)*q)}</b></div>`}).join(''):'<p style="color:var(--mut);font-size:.85rem">Tu carrito está vacío.</p>';
+  const t=totals();$('sub').textContent=money(t.s);$('ship').textContent=t.sh?money(t.sh):'Gratis';$('tot').textContent=money(t.t);$('buy').disabled=!cart.size;
+  $('shipNote').textContent=cart.size&&t.sh>0?`Te faltan ${money(FREE_SHIP_MIN-t.s)} para envío gratis (compras desde ${money(FREE_SHIP_MIN)}).`:'';
+}
+$('cartBox').onclick=e=>{
+  const b=e.target.closest('[data-dec],[data-inc],[data-r]');if(!b)return;e.preventDefault();
+  const id=+(b.dataset.dec||b.dataset.inc||b.dataset.r);const p=products.find(x=>x.id===id);if(!p)return;
+  const q=cart.get(id)||0;
+  if('inc' in b.dataset){if(q+1>p.s)return say('buyMsg','No hay más existencias de este producto.');cart.set(id,q+1);}
+  else if('dec' in b.dataset){if(q<=1)cart.delete(id);else cart.set(id,q-1);}
+  else cart.delete(id);
+  saveState();renderCart();
+};
+$('buy').onclick=async()=>{
+  const name=$('checkoutName').value.trim();
+  const email=$('checkoutEmail').value.trim().toLowerCase();
+  if(!cart.size)return say('buyMsg','Agrega al menos un producto al carrito.');
+  if(name.length<2)return say('buyMsg','Escribe tu nombre para continuar.');
+  if(!validEmail(email))return say('buyMsg','Escribe un correo electrónico válido.');
+  for(const [id,q] of cart){const p=products.find(x=>x.id===id);if(!p||q<1||q>p.s)return say('buyMsg',`No hay existencias suficientes de ${p?p.n:'un producto'}. Actualiza el carrito.`);}
+
+  const t=totals();
+  const existing=customers.find(c=>String(c.email).toLowerCase()===email);
+  const isNew=!existing;
+  let customer=existing;
+  if(!customer){customer={id:customers.reduce((m,c)=>Math.max(m,Number(c.id)||0),0)+1,name,email,total:0,orders:0};customers.push(customer);}
+  else customer.name=name;
+  user=customer;
+  const orderId='INS-'+Date.now().toString(36).toUpperCase();
+  const date=new Date().toLocaleString('es-MX');
+  const lines=[...cart].map(([id,q])=>{const p=products.find(x=>x.id===id);return {p,q,lineTotal:price(p)*q};});
+  const details=lines.map(x=>`${x.q} x ${x.p.n} — ${money(x.lineTotal)}`).join('\n');
+  const productSummary=lines.map(x=>`${x.q} x ${x.p.n}`).join(', ');
+  const paymentUrl=STRIPE_PAYMENT_LINK+'?client_reference_id='+encodeURIComponent(orderId)+'&prefilled_email='+encodeURIComponent(email);
+
+  /* Este HTML no recibe confirmación de Stripe: el pedido queda PENDIENTE y se reservan las existencias.
+     Se marca como pagado (suma al CRM) o cancelado (devuelve el stock) desde el Panel. */
+  lines.forEach(({p,q})=>{p.s-=q;});
+  orders.unshift({id:orderId,d:date,u:customer.name,email:customer.email,
+    lines:lines.map(({p,q,lineTotal})=>({pid:p.id,pr:p.n,q,tot:lineTotal,cost:p.cost*q})),
+    sub:t.s,sh:t.sh,t:t.t,status:ST.P});
+  const orderParams={to_email:email,customer_name:name,name,email,order_id:orderId,product:productSummary,products:details,order_details:details,total:money(t.t),total_mxn:t.t,shipping:money(t.sh),message:`Recibimos tu pedido ${orderId}. Estado: pendiente de pago. Para pagar, abre el enlace de Stripe e introduce ${money(t.t)} MXN.`,status:'Pendiente de pago',payment_url:paymentUrl};
+  cart.clear();saveState();renderAll();
+  say('buyMsg',`Pedido ${orderId} registrado como PENDIENTE DE PAGO. Total a introducir en Stripe: ${money(t.t)} MXN. Se abrirá la página de pago.`);
+
+  /* Abrimos la pestaña durante el clic para evitar bloqueadores de ventanas emergentes. */
+  const payTab=window.open('about:blank','_blank');
+  if(payTab){payTab.document.write('<!doctype html><title>Preparando pago</title><p style="font:16px Arial;padding:24px">Preparando tu pago de prueba con Stripe…</p>');}
+  let emailResults=[];
+  if(window.emailjs){
+    const jobs=[];
+    if(isNew)jobs.push(emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_WELCOME_TEMPLATE,{to_email:email,customer_name:name,name,email}));
+    jobs.push(emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_ORDER_TEMPLATE,orderParams));
+    emailResults=await Promise.allSettled(jobs);
+  }else{emailResults=[{status:'rejected',reason:new Error('No se pudo cargar el SDK de EmailJS')}];}
+  const ok=emailResults.filter(x=>x.status==='fulfilled').length;
+  const fail=emailResults.length-ok;
+  const emailNote=fail===0?'Correos enviados.':`${ok} correo(s) enviado(s); ${fail} no se pudo(ieron) enviar.`;
+  say('buyMsg',`Pedido ${orderId} pendiente de pago · ${money(t.t)} MXN. ${emailNote} En Stripe introduce exactamente ese importe.`);
+  if(payTab){payTab.location.href=paymentUrl;}else{window.location.href=paymentUrl;}
+};
+function say(id,m){const e=$(id);e.textContent=m;e.className='msg show'}
+
+/* ---------- Estado de pedidos ---------- */
+function setOrderStatus(orderId,newStatus){
+  const o=orders.find(x=>x.id===orderId);
+  if(!o||o.status!==ST.P)return; /* solo los pedidos pendientes cambian de estado */
+  if(newStatus===ST.OK){
+    const c=customers.find(x=>String(x.email).toLowerCase()===String(o.email).toLowerCase());
+    if(c){c.orders+=1;c.total+=o.t;}
+  }else if(newStatus===ST.X){
+    o.lines.forEach(l=>{const p=products.find(x=>x.id===l.pid);if(p)p.s+=l.q;});
+  }else return;
+  o.status=newStatus;
+  saveState();renderAll();
+}
+
+/* ---------- Cuenta ---------- */
+function renderAuth(){
+  if(!user){
+    $('authBox').innerHTML='<h3>Historial de cliente</h3><p style="font-size:.9rem;color:var(--mut);margin-top:0">No necesitas contraseña. Escribe el correo con el que hiciste tu pedido para consultar tu historial.</p><div class="f"><label for="lookupEmail">Correo electrónico</label><input id="lookupEmail" type="email" maxlength="120" placeholder="nombre@correo.com"></div><button class="btn" id="lookupBtn" type="button">Ver mi historial</button><div class="msg" id="lookupMsg"></div>';
+    $('lookupBtn').onclick=()=>{
+      const em=$('lookupEmail').value.trim().toLowerCase();
+      if(!validEmail(em))return say('lookupMsg','Escribe un correo electrónico válido.');
+      const c=customers.find(x=>String(x.email).toLowerCase()===em);
+      if(!c)return say('lookupMsg','No encontramos pedidos con ese correo.');
+      user=c;saveState();renderAll();
+    };
+    return;
+  }
+  const mine=orders.filter(o=>String(o.email).toLowerCase()===String(user.email).toLowerCase());
+  const pend=mine.filter(o=>o.status===ST.P).length;
+  $('authBox').innerHTML=`<h3>Hola, ${esc(user.name)}</h3><p style="font-size:.9rem">Correo: ${esc(user.email)}<br>Pedidos pagados: ${user.orders} · Total pagado: ${money(user.total)}${pend?`<br>Pedidos pendientes de pago: ${pend}`:''}<br>Segmento: <b>${seg(user)}</b></p><h3 style="margin-top:16px">Historial de pedidos</h3>${mine.length?mine.map(o=>`<div class="rev"><b>${esc(o.id)}</b> · <small>${esc(o.d)}</small><br>${o.lines.map(l=>`${l.q} × ${esc(l.pr)}`).join(', ')}<br><small>Total: ${money(o.t)} · <b class="${stCls(o.status)}">${esc(o.status)}</b></small>${o.status===ST.P?`<br><small>Para pagar en Stripe introduce exactamente ${money(o.t)} MXN.</small>`:''}</div>`).join(''):'<p style="color:var(--mut);font-size:.84rem">Aún no hay pedidos registrados.</p>'}<button class="btn lt" id="out" type="button" style="margin-top:12px">Cerrar consulta</button>`;
+  $('out').onclick=()=>{user=null;saveState();renderAll()};
+}
+$('rvProd').innerHTML=products.map(p=>`<option value="${p.id}">${esc(p.n)}</option>`).join('');
+$('rvBtn').onclick=()=>{
+  const name=$('rvName').value.trim(),t=$('rvTxt').value.trim();
+  if(name.length<2)return say('rvMsg','Escribe tu nombre para publicar la reseña.');
+  if(!t)return say('rvMsg','Escribe tu reseña.');
+  reviews.unshift({p:+$('rvProd').value,u:name,st:+$('rvStars').value,t});
+  if(reviews.length>60)reviews.length=60;
+  $('rvTxt').value='';saveState();renderAll();say('rvMsg','¡Gracias por tu reseña!')};
+/* Calificación = promedio ponderado entre la base del producto (peso 3) y las reseñas de clientes. Siempre se calcula desde la base. */
+function recalcRatings(){
+  products.forEach(p=>{const l=reviews.filter(r=>r.p===p.id);
+    p.r=l.length?Math.round((p.r0*3+l.reduce((a,r)=>a+r.st,0))/(3+l.length)*10)/10:p.r0;});
+}
+function renderReviews(){
+  $('revList').innerHTML=reviews.length?reviews.map(r=>{const p=products.find(x=>x.id===r.p);return`<div class="rev"><b>${esc(r.u)}</b> · ${'★'.repeat(r.st)}${'☆'.repeat(5-r.st)} · <small>${p?esc(p.n):''}</small><br>${esc(r.t)}</div>`}).join(''):'<p style="color:var(--mut);font-size:.84rem">Aún no hay reseñas.</p>';
+}
+/* Segmento según compras PAGADAS. */
+function seg(c){return c.orders===0?'Sin compras pagadas':c.orders>=4||c.total>=2000?'VIP':c.orders>=2?'Frecuente':'Nuevo'}
+
+/* ---------- Panel ---------- */
+const S={
+ Base:{act:120,nue:30,per:.08,tick:280,frec:2,cogs:.35,fijo:18000,mkt:6000},
+ Crecimiento:{act:150,nue:60,per:.06,tick:310,frec:2.4,cogs:.34,fijo:20000,mkt:12000},
+ Crisis:{act:90,nue:10,per:.15,tick:240,frec:1.4,cogs:.38,fijo:18000,mkt:3000}};
+const lab={act:'Clientes activos',nue:'Clientes nuevos/mes',per:'Abandono (0–1)',tick:'Precio prom. por compra',frec:'Compras/cliente/mes',cogs:'Costo de ventas (0–1)',fijo:'Costos fijos',mkt:'Marketing'};
+/* Con guardas para evitar divisiones entre cero cuando se editan los supuestos. */
+function calc(s){const ing=s.act*s.frec*s.tick,mb=ing*(1-s.cogs),ut=mb-s.fijo-s.mkt,cm=s.tick*s.frec*(1-s.cogs),
+  cac=s.nue>0?s.mkt/s.nue:0,ltv=s.per>0?cm/s.per:0,rel=cac>0?ltv/cac:0,eq=cm>0?Math.ceil((s.fijo+s.mkt)/cm):0;
+  return{ing,ut,perd:Math.round(s.act*s.per),cac,ltv,rel,eq}}
+function renderPanel(){
+  $('scen').innerHTML=Object.keys(S).map(k=>`<button class="chip${k===scen?' on':''}" data-s="${k}">${k}</button>`).join('');
+  $('inputs').innerHTML=Object.keys(lab).map(k=>`<div><label>${lab[k]}</label><input type="number" step="any" min="0" data-k="${k}" value="${S[scen][k]}"></div>`).join('');
+  kpis();
+  $('crm').innerHTML='<tr><th>Cliente</th><th>Correo</th><th>Pedidos pagados</th><th>Total pagado</th><th>Pendientes</th><th>Segmento</th></tr>'+customers.map(c=>{const pd=orders.filter(o=>o.status===ST.P&&String(o.email).toLowerCase()===String(c.email).toLowerCase()).length;return`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${c.orders}</td><td>${money(c.total)}</td><td>${pd||'—'}</td><td><b>${seg(c)}</b></td></tr>`}).join('');
+  $('inv').innerHTML='<tr><th>Producto</th><th>Precio</th><th>Costo</th><th>Existencias</th><th>Calif.</th><th>Envío gratis</th><th>Oferta</th></tr>'+products.map(p=>`<tr><td>${esc(p.n)}</td><td>${money(p.p)}</td><td>${money(p.cost)}</td><td class="${p.s<=5?'neg':''}">${p.s}${p.s<=5?' · bajo':''}</td><td>★ ${p.r}</td><td>${p.free?'Sí':'No'}</td><td>${p.off?p.off+'%':'—'}</td></tr>`).join('');
+  const paid=orders.filter(o=>o.status===ST.OK).reduce((a,o)=>a+o.t,0),pendT=orders.filter(o=>o.status===ST.P).reduce((a,o)=>a+o.t,0);
+  $('salesSum').innerHTML=`Cobrado: <b class="pos">${money(paid)}</b> · Por cobrar: <b class="neg">${money(pendT)}</b>`;
+  $('sales').innerHTML=orders.length?'<tr><th>Fecha</th><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Margen estimado*</th><th>Acciones</th></tr>'+orders.map(o=>{
+    const cost=o.lines.reduce((a,l)=>a+l.cost,0);
+    const acts=o.status===ST.P?`<button class="btn alt sm" type="button" data-pay="${esc(o.id)}">Marcar pagado</button><button class="btn lt sm" type="button" data-cancel="${esc(o.id)}">Cancelar</button>`:'—';
+    return`<tr><td>${esc(o.d)}</td><td>${esc(o.id)}</td><td>${esc(o.u)}<br><small>${esc(o.email)}</small></td><td>${o.lines.map(l=>`${l.q} × ${esc(l.pr)}`).join('<br>')}</td><td>${money(o.t)}</td><td><b class="${stCls(o.status)}">${esc(o.status)}</b></td><td>${o.status===ST.X?'—':money(o.sub-cost)}</td><td>${acts}</td></tr>`}).join(''):'<tr><td style="color:var(--mut)">Aún no hay pedidos. Realiza un pedido desde la Tienda para verlo aquí.</td></tr>';
+  compare();
+}
+$('sales').onclick=e=>{
+  const b=e.target.closest('[data-pay],[data-cancel]');if(!b)return;
+  if(b.dataset.pay)setOrderStatus(b.dataset.pay,ST.OK);
+  else if(b.dataset.cancel)setOrderStatus(b.dataset.cancel,ST.X);
+};
+function kpis(){const r=calc(S[scen]);
+  const nPaid=orders.filter(o=>o.status===ST.OK).length,nPend=orders.filter(o=>o.status===ST.P).length;
+  $('kpis').innerHTML=[['Ingresos mensuales',money(r.ing)],['Utilidad mensual',`<span class="${r.ut<0?'neg':'pos'}">${money(r.ut)}</span>`],['Clientes perdidos/mes',r.perd],['CAC',money(r.cac)],['LTV',money(r.ltv)],['Relación LTV/CAC',r.cac>0?r.rel.toFixed(2)+'x':'—'],['Punto de equilibrio',r.eq+' clientes'],['Pedidos pagados / pendientes',`${nPaid} / ${nPend}`]].map(([a,b])=>`<div class="kpi"><small>${a}</small><b>${b}</b></div>`).join('')}
+$('scen').onclick=e=>{if(e.target.dataset.s){scen=e.target.dataset.s;saveState();renderPanel()}};
+$('inputs').oninput=e=>{const k=e.target.dataset.k;if(k){let v=Math.max(0,parseFloat(e.target.value)||0);if(k==='per'||k==='cogs')v=Math.min(v,1);S[scen][k]=v;kpis();compare();saveState()}};
+$('ptabs').onclick=e=>{const t=e.target.dataset.t;if(!t)return;document.querySelectorAll('#ptabs .chip').forEach(x=>x.classList.toggle('on',x===e.target));document.querySelectorAll('.ptab').forEach(x=>x.style.display=x.id===t?'block':'none');if(t==='t4')compare()};
+let ch;
+function compare(){
+  const ks=Object.keys(S),R=ks.map(k=>calc(S[k]));
+  $('cmp').innerHTML='<tr><th>Escenario</th><th>Ingresos</th><th>Utilidad</th><th>CAC</th><th>LTV/CAC</th><th>Equilibrio</th></tr>'+ks.map((k,i)=>`<tr><td>${k}</td><td>${money(R[i].ing)}</td><td class="${R[i].ut<0?'neg':''}">${money(R[i].ut)}</td><td>${money(R[i].cac)}</td><td>${R[i].cac>0?R[i].rel.toFixed(2)+'x':'—'}</td><td>${R[i].eq}</td></tr>`).join('');
+  if(typeof Chart==='undefined'||!$('t4').offsetParent)return;
+  if(ch)ch.destroy();
+  const cs=getComputedStyle(document.body);
+  Chart.defaults.color=cs.getPropertyValue('--mut').trim()||'#888';
+  Chart.defaults.borderColor=cs.getPropertyValue('--line').trim()||'#ddd';
+  ch=new Chart($('chart'),{type:'bar',data:{labels:ks,datasets:[{label:'Ingresos',data:R.map(r=>r.ing),backgroundColor:'#c8102e'},{label:'Utilidad',data:R.map(r=>r.ut),backgroundColor:'#8a8279'}]},options:{responsive:true,maintainAspectRatio:false}});
+}
+/* Reinicio de datos de prueba (dos clics para confirmar, sin ventanas emergentes). */
+let resetArmed=false,resetTimer;
+$('resetBtn').onclick=()=>{
+  if(!resetArmed){resetArmed=true;$('resetBtn').textContent='¿Seguro? Clic de nuevo para borrar';clearTimeout(resetTimer);resetTimer=setTimeout(()=>{resetArmed=false;$('resetBtn').textContent='Reiniciar datos de prueba'},4000);return;}
+  try{localStorage.removeItem(STORAGE_KEY);}catch(err){console.warn(err);}
+  location.reload();
+};
+function renderAll(){
+  recalcRatings();
+  if(user){if(!$('checkoutName').value)$('checkoutName').value=user.name;if(!$('checkoutEmail').value)$('checkoutEmail').value=user.email;if(!$('rvName').value)$('rvName').value=user.name;}
+  renderShop();renderAuth();renderReviews();renderPanel();
+}
+/* Si cambia el estado en otra pestaña, se sincroniza para no vender existencias que ya no hay. */
+window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY&&e.newValue){loadState();renderAll();}});
+/* La gráfica toma colores del tema; se redibuja si cambia claro/oscuro. */
+if(window.matchMedia){const mq=matchMedia('(prefers-color-scheme: dark)');const onTheme=()=>compare();if(mq.addEventListener)mq.addEventListener('change',onTheme);}
+loadState();
+renderAll();
+</script>
+</body>
+</html>
